@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tejas Khopade — Full-Stack Developer & Support Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg-0:#1a0608;
+    --bg-1:#2a0d10;
+    --bg-2:#3d1418;
+    --bg-3:#4a1818;
+    --maroon:#5c1c20;
+    --accent:#d4574e;
+    --accent-bright:#e8675a;
+    --accent-glow:rgba(232,103,90,0.4);
+    --rim:#ff9a7a;
+    --text:#f5e8e2;
+    --text-muted:rgba(245,232,226,0.65);
+    --text-dim:rgba(245,232,226,0.4);
+    --teal:#5fb3a3;
+    --gold:#d4a574;
+    --card-bg:rgba(255,255,255,0.04);
+    --card-border:rgba(255,255,255,0.08);
+    --card-border-hover:rgba(232,103,90,0.4);
+    --serif:'Fraunces',Georgia,serif;
+    --sans:'Outfit',system-ui,sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  html,body{background:var(--bg-0);color:var(--text);font-family:var(--sans);overflow-x:hidden;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{position:relative;min-height:100vh}
+
+  /* ===== animated background ===== */
+  .bg-layer{position:fixed;inset:0;z-index:-2;pointer-events:none}
+  .bg-gradient{
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 20%, #5c1c20 0%, transparent 50%),
+      radial-gradient(ellipse 90% 70% at 80% 60%, #3d1418 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 50% 90%, #2a0d10 0%, transparent 60%),
+      linear-gradient(180deg, #1a0608 0%, #2a0d10 50%, #1a0608 100%);
+  }
+  .bg-noise{
+    opacity:0.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .bg-grid{
+    opacity:0.05;
+    background-image:
+      linear-gradient(rgba(232,103,90,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,103,90,0.3) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse 70% 50% at 50% 30%, black 0%, transparent 70%);
+  }
+  .particles{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .particle{position:absolute;border-radius:50%;background:var(--accent);opacity:0;animation:float 20s linear infinite}
+  @keyframes float{
+    0%{transform:translateY(110vh) translateX(0) scale(0);opacity:0}
+    10%{opacity:0.6}
+    90%{opacity:0.6}
+    100%{transform:translateY(-10vh) translateX(40px) scale(1);opacity:0}
+  }
+  .orb{position:fixed;border-radius:50%;filter:blur(60px);opacity:0.35;pointer-events:none;z-index:-1;transition:transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+  .orb-1{width:500px;height:500px;background:#8b2a30;top:-100px;left:-150px}
+  .orb-2{width:400px;height:400px;background:#d4574e;bottom:-100px;right:-100px}
+  .orb-3{width:300px;height:300px;background:#5fb3a3;top:40%;left:50%;opacity:0.12}
+
+  /* ===== nav ===== */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);background:rgba(26,6,8,0.4);border-bottom:1px solid rgba(255,255,255,0.04)}
+  .logo{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px;color:var(--accent);letter-spacing:-0.02em}
+  .logo span{color:var(--text)}
+  .nav-center{display:flex;gap:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:30px;padding:4px}
+  .nav-center a{color:var(--text-muted);text-decoration:none;padding:8px 18px;border-radius:24px;font-size:13px;font-weight:400;transition:all 0.3s;cursor:pointer}
+  .nav-center a:hover{color:var(--text)}
+  .nav-center a.active{background:var(--accent);color:#fff}
+  .lang-toggle{display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.04);border:1px solid rgba(232,103,90,0.25);border-radius:30px;padding:4px;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.05em;transition:all 0.3s}
+  .lang-toggle:hover{border-color:var(--accent);box-shadow:0 0 20px var(--accent-glow)}
+  .lang-toggle .lang-opt{padding:6px 14px;border-radius:24px;color:var(--text-muted);transition:all 0.3s}
+  .lang-toggle .lang-opt.on{background:var(--accent);color:#fff}
+
+  /* ===== layout shell ===== */
+  main{padding-top:84px}
+  section{padding:80px 40px;max-width:1280px;margin:0 auto;position:relative}
+  .section-label{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:12px;opacity:0;animation:fadeUp 0.8s ease 0.1s forwards}
+  .section-label::before{content:"◆ ";color:var(--accent-bright)}
+  .section-title{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(36px,5vw,56px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:48px;opacity:0;animation:fadeUp 0.8s ease 0.2s forwards}
+  .section-title em{color:var(--accent);font-style:italic}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===== hero ===== */
+  .hero{display:grid;grid-template-columns:1fr 460px 1fr;gap:40px;align-items:center;min-height:calc(100vh - 84px);padding:40px 40px 80px;max-width:1400px;margin:0 auto;position:relative}
+  .hero-left,.hero-right{position:relative;z-index:2}
+  .hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px;opacity:0;animation:fadeUp 0.8s ease 0.3s forwards}
+  .hero-eyebrow::before{content:"";display:inline-block;width:30px;height:1px;background:var(--accent)}
+  .hero-headline{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.5vw,68px);line-height:1.0;letter-spacing:-0.03em;margin-bottom:20px;opacity:0;animation:fadeUp 0.8s ease 0.5s forwards}
+  .hero-headline em{font-style:italic;color:var(--accent)}
+  .hero-sub{font-size:15px;line-height:1.65;color:var(--text-muted);margin-bottom:32px;max-width:380px;opacity:0;animation:fadeUp 0.8s ease 0.7s forwards}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:30px;font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);letter-spacing:0.02em}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 24px rgba(232,103,90,0.25)}
+  .btn-primary:hover{background:var(--accent-bright);transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,103,90,0.4)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.2)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent-bright);transform:translateY(-2px)}
+  .btn-arrow{transition:transform 0.3s}
+  .btn:hover .btn-arrow{transform:translateX(4px)}
+
+  .hero-right{text-align:right}
+  .hero-right .hero-eyebrow{justify-content:flex-end;animation-delay:0.4s}
+  .hero-right .hero-eyebrow::before{display:none}
+  .hero-right .hero-eyebrow::after{content:"";display:inline-block;width:30px;height:1px;background:var(--accent)}
+  .hero-right .hero-headline{font-size:clamp(28px,3.5vw,42px);animation-delay:0.6s}
+  .hero-right .hero-sub{margin-left:auto;animation-delay:0.8s}
+  .hero-right .hero-cta{justify-content:flex-end;animation-delay:1.0s}
+
+  /* ===== avatar centerpiece ===== */
+  .avatar-stage{position:relative;display:flex;align-items:flex-end;justify-content:center;height:100%;min-height:600px}
+  .avatar-bg-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:480px;height:480px;background:radial-gradient(circle, rgba(232,103,90,0.45) 0%, rgba(232,103,90,0.15) 40%, transparent 70%);border-radius:50%;filter:blur(30px);z-index:1;animation:pulse 4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:0.7}50%{transform:translateX(-50%) scale(1.08);opacity:1}}
+  .avatar-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:540px;height:540px;z-index:1;opacity:0.3}
+  .avatar-rings .ring{position:absolute;inset:0;border:1px solid var(--accent);border-radius:50%;animation:expand 4s ease-out infinite}
+  .avatar-rings .ring:nth-child(2){animation-delay:1.3s}
+  .avatar-rings .ring:nth-child(3){animation-delay:2.6s}
+  @keyframes expand{0%{transform:scale(0.6);opacity:0.6}100%{transform:scale(1.3);opacity:0}}
+  .avatar-img{position:relative;z-index:3;max-width:100%;width:480px;height:auto;filter:drop-shadow(0 30px 60px rgba(0,0,0,0.5)) drop-shadow(0 0 80px rgba(232,103,90,0.2));animation:floatChar 6s ease-in-out infinite;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)}
+  @keyframes floatChar{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  /* floating tech chips around avatar */
+  .float-chip{position:absolute;z-index:2;background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:10px 14px;font-family:var(--mono);font-size:11px;color:var(--text);display:flex;align-items:center;gap:8px;animation:floatChip 5s ease-in-out infinite;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+  .float-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .chip-1{top:18%;left:-10%;animation-delay:0s}
+  .chip-1 .dot{background:#f89820}
+  .chip-2{top:35%;right:-15%;animation-delay:1.2s}
+  .chip-2 .dot{background:#6db33f}
+  .chip-3{top:62%;left:-5%;animation-delay:2.4s}
+  .chip-3 .dot{background:#61dafb}
+  .chip-4{top:78%;right:-8%;animation-delay:3.6s}
+  .chip-4 .dot{background:#5fb3a3}
+  @keyframes floatChip{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(1deg)}}
+
+  /* hero stat strip */
+  .stat-strip{position:absolute;bottom:0;left:50%;transform:translateX(-50%);display:flex;gap:32px;padding:20px 36px;background:rgba(0,0,0,0.4);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:60px;z-index:5;opacity:0;animation:fadeUp 1s ease 1.2s forwards}
+  .stat{text-align:center}
+  .stat-num{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px;color:var(--accent-bright);line-height:1}
+  .stat-label{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:4px}
+  .stat-divider{width:1px;background:rgba(255,255,255,0.1)}
+
+  /* ===== about/timeline ===== */
+  .timeline{position:relative;padding-left:32px}
+  .timeline::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg, var(--accent), transparent)}
+  .tl-item{position:relative;padding-bottom:48px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-30px;top:6px;width:17px;height:17px;border-radius:50%;background:var(--bg-0);border:2px solid var(--accent);box-shadow:0 0 0 4px rgba(232,103,90,0.15)}
+  .tl-date{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px}
+  .tl-role{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.2;margin-bottom:4px}
+  .tl-company{color:var(--text-muted);font-size:14px;margin-bottom:14px}
+  .tl-company .loc{color:var(--text-dim)}
+  .tl-points{list-style:none;padding:0}
+  .tl-points li{position:relative;padding-left:20px;color:var(--text-muted);font-size:14px;line-height:1.65;margin-bottom:8px}
+  .tl-points li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:500}
+
+  /* ===== skills ===== */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:16px}
+  .skill-cat{background:var(--card-bg);border:1px solid var(--card-border);border-radius:18px;padding:24px;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);position:relative;overflow:hidden}
+  .skill-cat::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg, var(--accent), transparent);transform:scaleX(0);transform-origin:left;transition:transform 0.5s}
+  .skill-cat:hover{border-color:var(--card-border-hover);transform:translateY(-4px);background:rgba(255,255,255,0.06)}
+  .skill-cat:hover::before{transform:scaleX(1)}
+  .skill-cat-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .skill-icon{width:28px;height:28px;border-radius:8px;background:rgba(232,103,90,0.15);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-size:14px;font-weight:500}
+  .skill-cat-name{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--text)}
+  .skill-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .skill-chip{font-family:var(--mono);font-size:11px;padding:5px 11px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:20px;color:var(--text-muted);transition:all 0.25s}
+  .skill-chip:hover{color:var(--accent);border-color:var(--accent);background:rgba(232,103,90,0.08)}
+
+  /* ===== projects ===== */
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px}
+  .proj{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:28px;cursor:pointer;transition:all 0.5s cubic-bezier(0.16,1,0.3,1);position:relative;overflow:hidden;transform-style:preserve-3d}
+  .proj::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(232,103,90,0.08) 0%, transparent 50%);opacity:0;transition:opacity 0.4s;pointer-events:none}
+  .proj:hover{border-color:var(--card-border-hover);transform:translateY(-6px);background:rgba(255,255,255,0.05)}
+  .proj:hover::after{opacity:1}
+  .proj-num{font-family:var(--serif);font-style:italic;font-size:36px;color:var(--accent);opacity:0.4;line-height:1;margin-bottom:14px;display:block}
+  .proj-tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:3px 10px;background:rgba(95,179,163,0.12);color:var(--teal);border-radius:20px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;border:1px solid rgba(95,179,163,0.2)}
+  .proj-title{font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.25;margin-bottom:10px}
+  .proj-desc{color:var(--text-muted);font-size:14px;line-height:1.6;margin-bottom:18px}
+  .proj-stack{display:flex;flex-wrap:wrap;gap:6px}
+  .proj-stack span{font-family:var(--mono);font-size:10px;color:var(--text-dim);padding:3px 9px;background:rgba(255,255,255,0.03);border-radius:16px;border:1px solid rgba(255,255,255,0.05)}
+
+  /* ===== contact ===== */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .contact-headline{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(32px,4.5vw,52px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:20px}
+  .contact-headline em{color:var(--accent)}
+  .contact-sub{color:var(--text-muted);font-size:15px;line-height:1.7;margin-bottom:28px;max-width:420px}
+  .contact-links{display:flex;flex-direction:column;gap:12px}
+  .clink{display:flex;align-items:center;gap:16px;padding:18px 22px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;text-decoration:none;color:var(--text);transition:all 0.35s;font-size:14px}
+  .clink:hover{border-color:var(--card-border-hover);background:rgba(255,255,255,0.06);transform:translateX(6px)}
+  .clink-icon{width:38px;height:38px;border-radius:10px;background:rgba(232,103,90,0.12);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:18px;flex-shrink:0}
+  .clink-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase}
+  .clink-val{font-size:14px;color:var(--text);margin-top:2px}
+  .clink-arrow{margin-left:auto;color:var(--text-dim);transition:all 0.3s}
+  .clink:hover .clink-arrow{color:var(--accent);transform:translateX(4px)}
+
+  /* ===== footer ===== */
+  footer{padding:40px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;color:var(--text-dim);font-size:12px;font-family:var(--mono);letter-spacing:0.05em}
+  footer .heart{color:var(--accent)}
+
+  /* ===== reveal animation ===== */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* ===== responsive ===== */
+  @media (max-width: 1024px){
+    .hero{grid-template-columns:1fr;text-align:center;gap:20px}
+    .hero-left,.hero-right{text-align:center}
+    .hero-right .hero-eyebrow{justify-content:center}
+    .hero-right .hero-sub{margin-left:auto;margin-right:auto}
+    .hero-right .hero-cta{justify-content:center}
+    .hero-cta{justify-content:center}
+    .hero-sub{margin-left:auto;margin-right:auto}
+    .hero-eyebrow{justify-content:center}
+    .avatar-stage{order:-1;min-height:auto}
+    .avatar-img{width:320px}
+    .float-chip{display:none}
+    .contact-wrap{grid-template-columns:1fr;gap:30px}
+    .nav-center{display:none}
+  }
+  @media (max-width: 640px){
+    nav{padding:14px 20px}
+    section{padding:60px 20px}
+    .hero{padding:20px 20px 60px}
+    .avatar-img{width:260px}
+    .stat-strip{flex-direction:row;padding:14px 20px;gap:16px}
+    .stat-num{font-size:18px}
+    .timeline{padding-left:24px}
+    .tl-item::before{left:-22px}
+  }
+
+  /* ===== utility ===== */
+  .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  ::selection{background:var(--accent);color:#fff}
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:var(--bg-0)}
+  ::-webkit-scrollbar-thumb{background:var(--maroon);border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- background layers -->
+<div class="bg-layer bg-gradient"></div>
+<div class="bg-layer bg-noise"></div>
+<div class="bg-layer bg-grid"></div>
+<div class="orb orb-1" id="orb1"></div>
+<div class="orb orb-2" id="orb2"></div>
+<div class="orb orb-3" id="orb3"></div>
+<div class="particles" id="particles"></div>
+
+<!-- nav -->
+<nav>
+  <a href="#home" class="logo">Tejas<span>.</span></a>
+  <div class="nav-center">
+    <a href="#home" class="active" data-t="nav.home">Home</a>
+    <a href="#experience" data-t="nav.experience">Experience</a>
+    <a href="#skills" data-t="nav.skills">Skills</a>
+    <a href="#projects" data-t="nav.projects">Projects</a>
+    <a href="#contact" data-t="nav.contact">Contact</a>
+  </div>
+  <button class="lang-toggle" id="langBtn" aria-label="Toggle language">
+    <span class="lang-opt on" data-lang-opt="en">EN</span>
+    <span class="lang-opt" data-lang-opt="de">DE</span>
+  </button>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-eyebrow" data-t="hero.eyebrow">Hello, I'm Tejas</div>
+    <h1 class="hero-headline" data-t-html="hero.headline">Full-stack developer <em>&amp;</em> support engineer</h1>
+    <p class="hero-sub" data-t="hero.sub">Building enterprise software with Java, Spring Boot &amp; TIBCO. M.Sc. Computer Science student at Universität Paderborn, open to roles across Germany.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary"><span data-t="hero.cta1">View projects</span><span class="btn-arrow">→</span></a>
+      <a href="#contact" class="btn btn-ghost" data-t="hero.cta2">Get in touch</a>
+    </div>
+  </div>
+
+  <div class="avatar-stage">
+    <div class="avatar-bg-glow"></div>
+    <div class="avatar-rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <div class="float-chip chip-1"><span class="dot"></span>Java</div>
+    <div class="float-chip chip-2"><span class="dot"></span>Spring Boot</div>
+    <div class="float-chip chip-3"><span class="dot"></span>React</div>
+    <div class="float-chip chip-4"><span class="dot"></span>TIBCO</div>
+    <img src="avatar.png" alt="Tejas Khopade 3D avatar" class="avatar-img" id="avatar">
+    <div class="stat-strip">
+      <div class="stat"><div class="stat-num">6mo</div><div class="stat-label" data-t="stat.fulltime">Full-time</div></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><div class="stat-num">1+yr</div><div class="stat-label" data-t="stat.intern">Internship</div></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><div class="stat-num">9.02</div><div class="stat-label" data-t="stat.cgpa">CGPA</div></div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-eyebrow" data-t="hero.right.eyebrow">Currently in Germany</div>
+    <h2 class="hero-headline" data-t-html="hero.right.headline">Open to <em>backend</em> &amp; full-stack roles</h2>
+    <p class="hero-sub" data-t="hero.right.sub">Based in Paderborn. Combining enterprise support experience with full-stack development to ship reliable products.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary" id="resumeBtn"><span data-t="hero.right.cta">Download CV</span><span class="btn-arrow">↓</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label reveal" data-t="exp.label">Experience</div>
+  <h2 class="section-title reveal" data-t-html="exp.title">Where I've <em>built</em> &amp; supported</h2>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-date" data-t="exp.1.date">Mar 2025 – Sep 2025</div>
+      <h3 class="tl-role" data-t="exp.1.role">Associate Support Engineer</h3>
+      <div class="tl-company"><span data-t="exp.1.company">Encora</span> · <span class="loc" data-t="exp.1.loc">Pune, India</span></div>
+      <ul class="tl-points">
+        <li data-t="exp.1.p1">Delivered L1/L2 support for TIBCO Spotfire and StreamBase under strict SLAs.</li>
+        <li data-t="exp.1.p2">Monitored and debugged Java backend services through root-cause log analysis.</li>
+        <li data-t="exp.1.p3">Automated repetitive support workflows in Java, improving team throughput.</li>
+        <li data-t="exp.1.p4">Led internal knowledge-transfer sessions on Spotfire &amp; StreamBase troubleshooting.</li>
+      </ul>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-date" data-t="exp.2.date">Sep 2024 – Mar 2025</div>
+      <h3 class="tl-role" data-t="exp.2.role">Software Developer Intern</h3>
+      <div class="tl-company"><span data-t="exp.2.company">Hefshine Softwares</span> · <span class="loc" data-t="exp.2.loc">Pune, India</span></div>
+      <ul class="tl-points">
+        <li data-t="exp.2.p1">Built and deployed RESTful APIs with Spring Boot for full-stack communication.</li>
+        <li data-t="exp.2.p2">Designed responsive front-end interfaces in HTML, CSS, and JavaScript.</li>
+        <li data-t="exp.2.p3">Optimized MySQL queries and CRUD operations for improved performance.</li>
+      </ul>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-date" data-t="exp.3.date">Jan 2023 – Sep 2023</div>
+      <h3 class="tl-role" data-t="exp.3.role">Front-End Developer Intern</h3>
+      <div class="tl-company"><span data-t="exp.3.company">Arqanum Technologies</span> · <span class="loc" data-t="exp.3.loc">Pune, India</span></div>
+      <ul class="tl-points">
+        <li data-t="exp.3.p1">Developed responsive UI components for blockchain applications.</li>
+        <li data-t="exp.3.p2">Created wireframes, mockups, and prototypes in Adobe XD and Figma.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal" data-t="skills.label">Toolkit</div>
+  <h2 class="section-title reveal" data-t-html="skills.title">Technologies I <em>work</em> with</h2>
+  <div class="skills-grid">
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head"><div class="skill-icon">{ }</div><div class="skill-cat-name" data-t="skills.lang">Languages</div></div>
+      <div class="skill-chips">
+        <span class="skill-chip">Java</span><span class="skill-chip">Python</span><span class="skill-chip">JavaScript</span><span class="skill-chip">SQL</span><span class="skill-chip">PHP</span><span class="skill-chip">HTML</span><span class="skill-chip">CSS</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head"><div class="skill-icon">⚙</div><div class="skill-cat-name" data-t="skills.fw">Frameworks</div></div>
+      <div class="skill-chips">
+        <span class="skill-chip">Spring Boot</span><span class="skill-chip">React.js</span><span class="skill-chip">RESTful APIs</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head"><div class="skill-icon">▤</div><div class="skill-cat-name" data-t="skills.ent">Enterprise tools</div></div>
+      <div class="skill-chips">
+        <span class="skill-chip">TIBCO Spotfire</span><span class="skill-chip">TIBCO StreamBase</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head"><div class="skill-icon">☁</div><div class="skill-cat-name" data-t="skills.cloud">Cloud &amp; DevOps</div></div>
+      <div class="skill-chips">
+        <span class="skill-chip">AWS EC2</span><span class="skill-chip">Git</span><span class="skill-chip">GitHub</span><span class="skill-chip">Apache Tomcat</span><span class="skill-chip">Docker</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head"><div class="skill-icon">▦</div><div class="skill-cat-name" data-t="skills.db">Databases</div></div>
+      <div class="skill-chips">
+        <span class="skill-chip">MySQL</span><span class="skill-chip">MongoDB</span><span class="skill-chip">Firebase</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head"><div class="skill-icon">✦</div><div class="skill-cat-name" data-t="skills.other">Other</div></div>
+      <div class="skill-chips">
+        <span class="skill-chip">Android Studio</span><span class="skill-chip">Figma</span><span class="skill-chip">Adobe XD</span><span class="skill-chip">Scikit-learn</span><span class="skill-chip">Pandas</span><span class="skill-chip">Plotly</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal" data-t="proj.label">Selected work</div>
+  <h2 class="section-title reveal" data-t-html="proj.title">Things I've <em>shipped</em></h2>
+  <div class="proj-grid">
+    <article class="proj reveal" data-proj>
+      <span class="proj-num">01</span>
+      <span class="proj-tag" data-t="proj.1.tag">Published</span>
+      <h3 class="proj-title" data-t="proj.1.title">Blockchain-based e-voting system</h3>
+      <p class="proj-desc" data-t="proj.1.desc">Decentralized voting platform using smart contracts for tamper-proof, privacy-preserving elections.</p>
+      <div class="proj-stack"><span>Solidity</span><span>Blockchain</span><span>Smart Contracts</span></div>
+    </article>
+    <article class="proj reveal" data-proj>
+      <span class="proj-num">02</span>
+      <span class="proj-tag" data-t="proj.2.tag">Published</span>
+      <h3 class="proj-title" data-t="proj.2.title">COVID-19 outbreak prediction</h3>
+      <p class="proj-desc" data-t="proj.2.desc">Analytics dashboard forecasting case trends with SVM and Logistic Regression, plus a DL model for X-ray detection.</p>
+      <div class="proj-stack"><span>Python</span><span>Scikit-learn</span><span>Pandas</span><span>Plotly</span></div>
+    </article>
+    <article class="proj reveal" data-proj>
+      <span class="proj-num">03</span>
+      <span class="proj-tag" data-t="proj.3.tag">Android</span>
+      <h3 class="proj-title" data-t="proj.3.title">Fortunate Future — fundraising app</h3>
+      <p class="proj-desc" data-t="proj.3.desc">Android platform connecting donors with individuals in need, with secure backend storage.</p>
+      <div class="proj-stack"><span>Java</span><span>Android Studio</span><span>Firebase</span></div>
+    </article>
+    <article class="proj reveal" data-proj>
+      <span class="proj-num">04</span>
+      <span class="proj-tag" data-t="proj.4.tag">Deployed</span>
+      <h3 class="proj-title" data-t="proj.4.title">Computer Lab Management System</h3>
+      <p class="proj-desc" data-t="proj.4.desc">College lab management for assignment submissions and practical tracking, deployed at BVJNIOT.</p>
+      <div class="proj-stack"><span>PHP</span><span>MySQL</span><span>Apache Tomcat</span></div>
+    </article>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="reveal">
+      <div class="section-label" data-t="contact.label">Let's connect</div>
+      <h2 class="contact-headline" data-t-html="contact.title">Let's build <em>something</em> together</h2>
+      <p class="contact-sub" data-t="contact.sub">Open to software development, backend engineering, and enterprise support roles across Germany. Always happy to talk shop over coffee.</p>
+    </div>
+    <div class="contact-links reveal">
+      <a href="mailto:tkhopade19@gmail.com" class="clink">
+        <div class="clink-icon">✉</div>
+        <div><div class="clink-label" data-t="contact.email">Email</div><div class="clink-val">tkhopade19@gmail.com</div></div>
+        <div class="clink-arrow">→</div>
+      </a>
+      <a href="https://linkedin.com/in/tejas-khopade" target="_blank" rel="noopener" class="clink">
+        <div class="clink-icon">in</div>
+        <div><div class="clink-label">LinkedIn</div><div class="clink-val">tejas-khopade</div></div>
+        <div class="clink-arrow">→</div>
+      </a>
+      <a href="https://github.com/TejasKhopadeViit" target="_blank" rel="noopener" class="clink">
+        <div class="clink-icon">{ }</div>
+        <div><div class="clink-label">GitHub</div><div class="clink-val">TejasKhopadeViit</div></div>
+        <div class="clink-arrow">→</div>
+      </a>
+      <a href="tel:+4915567093229" class="clink">
+        <div class="clink-icon">☏</div>
+        <div><div class="clink-label" data-t="contact.phone">Phone</div><div class="clink-val">+49 15567 093229</div></div>
+        <div class="clink-arrow">→</div>
+      </a>
+      <a href="#" class="clink">
+        <div class="clink-icon">⌖</div>
+        <div><div class="clink-label" data-t="contact.location">Location</div><div class="clink-val">Paderborn, Germany</div></div>
+        <div class="clink-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span data-t="footer.copy">© 2026 Tejas Khopade — Crafted with</span> <span class="heart">♥</span> <span data-t="footer.in">in Paderborn</span>
+</footer>
+
+<script>
+/* ===== translations ===== */
+const T = {
+  en: {
+    'nav.home':'Home','nav.experience':'Experience','nav.skills':'Skills','nav.projects':'Projects','nav.contact':'Contact',
+    'hero.eyebrow':"Hello, I'm Tejas",
+    'hero.headline':'Full-stack developer <em>&amp;</em> support engineer',
+    'hero.sub':'Building enterprise software with Java, Spring Boot & TIBCO. M.Sc. Computer Science student at Universität Paderborn, open to roles across Germany.',
+    'hero.cta1':'View projects','hero.cta2':'Get in touch',
+    'hero.right.eyebrow':'Currently in Germany',
+    'hero.right.headline':'Open to <em>backend</em> &amp; full-stack roles',
+    'hero.right.sub':'Based in Paderborn. Combining enterprise support experience with full-stack development to ship reliable products.',
+    'hero.right.cta':'Download CV',
+    'stat.fulltime':'Full-time','stat.intern':'Internship','stat.cgpa':'CGPA',
+    'exp.label':'Experience',
+    'exp.title':"Where I've <em>built</em> &amp; supported",
+    'exp.1.date':'Mar 2025 – Sep 2025','exp.1.role':'Associate Support Engineer','exp.1.company':'Encora','exp.1.loc':'Pune, India',
+    'exp.1.p1':'Delivered L1/L2 support for TIBCO Spotfire and StreamBase under strict SLAs.',
+    'exp.1.p2':'Monitored and debugged Java backend services through root-cause log analysis.',
+    'exp.1.p3':'Automated repetitive support workflows in Java, improving team throughput.',
+    'exp.1.p4':'Led internal knowledge-transfer sessions on Spotfire & StreamBase troubleshooting.',
+    'exp.2.date':'Sep 2024 – Mar 2025','exp.2.role':'Software Developer Intern','exp.2.company':'Hefshine Softwares','exp.2.loc':'Pune, India',
+    'exp.2.p1':'Built and deployed RESTful APIs with Spring Boot for full-stack communication.',
+    'exp.2.p2':'Designed responsive front-end interfaces in HTML, CSS, and JavaScript.',
+    'exp.2.p3':'Optimized MySQL queries and CRUD operations for improved performance.',
+    'exp.3.date':'Jan 2023 – Sep 2023','exp.3.role':'Front-End Developer Intern','exp.3.company':'Arqanum Technologies','exp.3.loc':'Pune, India',
+    'exp.3.p1':'Developed responsive UI components for blockchain applications.',
+    'exp.3.p2':'Created wireframes, mockups, and prototypes in Adobe XD and Figma.',
+    'skills.label':'Toolkit',
+    'skills.title':'Technologies I <em>work</em> with',
+    'skills.lang':'Languages','skills.fw':'Frameworks','skills.ent':'Enterprise tools','skills.cloud':'Cloud & DevOps','skills.db':'Databases','skills.other':'Other',
+    'proj.label':'Selected work',
+    'proj.title':"Things I've <em>shipped</em>",
+    'proj.1.tag':'Published','proj.1.title':'Blockchain-based e-voting system','proj.1.desc':'Decentralized voting platform using smart contracts for tamper-proof, privacy-preserving elections.',
+    'proj.2.tag':'Published','proj.2.title':'COVID-19 outbreak prediction','proj.2.desc':'Analytics dashboard forecasting case trends with SVM and Logistic Regression, plus a DL model for X-ray detection.',
+    'proj.3.tag':'Android','proj.3.title':'Fortunate Future — fundraising app','proj.3.desc':'Android platform connecting donors with individuals in need, with secure backend storage.',
+    'proj.4.tag':'Deployed','proj.4.title':'Computer Lab Management System','proj.4.desc':'College lab management for assignment submissions and practical tracking, deployed at BVJNIOT.',
+    'contact.label':"Let's connect",
+    'contact.title':"Let's build <em>something</em> together",
+    'contact.sub':'Open to software development, backend engineering, and enterprise support roles across Germany. Always happy to talk shop over coffee.',
+    'contact.email':'Email','contact.phone':'Phone','contact.location':'Location',
+    'footer.copy':'© 2026 Tejas Khopade — Crafted with','footer.in':'in Paderborn'
+  },
+  de: {
+    'nav.home':'Start','nav.experience':'Erfahrung','nav.skills':'Fähigkeiten','nav.projects':'Projekte','nav.contact':'Kontakt',
+    'hero.eyebrow':'Hallo, ich bin Tejas',
+    'hero.headline':'Full-Stack-Entwickler <em>&amp;</em> Support-Ingenieur',
+    'hero.sub':'Ich entwickle Unternehmenssoftware mit Java, Spring Boot und TIBCO. M.Sc.-Student der Informatik an der Universität Paderborn, offen für Stellen in ganz Deutschland.',
+    'hero.cta1':'Projekte ansehen','hero.cta2':'Kontakt aufnehmen',
+    'hero.right.eyebrow':'Derzeit in Deutschland',
+    'hero.right.headline':'Offen für <em>Backend-</em> &amp; Full-Stack-Rollen',
+    'hero.right.sub':'Wohnhaft in Paderborn. Ich verbinde Erfahrung im Enterprise-Support mit Full-Stack-Entwicklung, um zuverlässige Produkte auszuliefern.',
+    'hero.right.cta':'Lebenslauf herunterladen',
+    'stat.fulltime':'Vollzeit','stat.intern':'Praktikum','stat.cgpa':'Notendurchschnitt',
+    'exp.label':'Berufserfahrung',
+    'exp.title':'Wo ich <em>gebaut</em> und unterstützt habe',
+    'exp.1.date':'März 2025 – Sept. 2025','exp.1.role':'Associate Support Engineer','exp.1.company':'Encora','exp.1.loc':'Pune, Indien',
+    'exp.1.p1':'L1/L2-Support für TIBCO Spotfire und StreamBase unter strengen SLAs geliefert.',
+    'exp.1.p2':'Java-Backend-Services überwacht und durch Root-Cause-Loganalyse debuggt.',
+    'exp.1.p3':'Wiederkehrende Support-Workflows in Java automatisiert und Teamleistung verbessert.',
+    'exp.1.p4':'Interne Wissensvermittlung zum Troubleshooting von Spotfire & StreamBase geleitet.',
+    'exp.2.date':'Sept. 2024 – März 2025','exp.2.role':'Praktikant Softwareentwicklung','exp.2.company':'Hefshine Softwares','exp.2.loc':'Pune, Indien',
+    'exp.2.p1':'RESTful-APIs mit Spring Boot für Full-Stack-Kommunikation entwickelt und bereitgestellt.',
+    'exp.2.p2':'Responsive Frontend-Oberflächen mit HTML, CSS und JavaScript gestaltet.',
+    'exp.2.p3':'MySQL-Abfragen und CRUD-Operationen für bessere Performance optimiert.',
+    'exp.3.date':'Jan. 2023 – Sept. 2023','exp.3.role':'Praktikant Frontend-Entwicklung','exp.3.company':'Arqanum Technologies','exp.3.loc':'Pune, Indien',
+    'exp.3.p1':'Responsive UI-Komponenten für Blockchain-Anwendungen entwickelt.',
+    'exp.3.p2':'Wireframes, Mockups und Prototypen in Adobe XD und Figma erstellt.',
+    'skills.label':'Werkzeugkasten',
+    'skills.title':'Womit ich <em>arbeite</em>',
+    'skills.lang':'Sprachen','skills.fw':'Frameworks','skills.ent':'Enterprise-Tools','skills.cloud':'Cloud & DevOps','skills.db':'Datenbanken','skills.other':'Weiteres',
+    'proj.label':'Ausgewählte Arbeiten',
+    'proj.title':'Was ich <em>veröffentlicht</em> habe',
+    'proj.1.tag':'Veröffentlicht','proj.1.title':'Blockchain-basiertes E-Voting-System','proj.1.desc':'Dezentrale Wahlplattform mit Smart Contracts für manipulationssichere, datenschutzfreundliche Wahlen.',
+    'proj.2.tag':'Veröffentlicht','proj.2.title':'COVID-19-Ausbruchsprognose','proj.2.desc':'Analytik-Dashboard zur Vorhersage von Fallzahlen mit SVM und logistischer Regression, plus DL-Modell zur Röntgenerkennung.',
+    'proj.3.tag':'Android','proj.3.title':'Fortunate Future — Spenden-App','proj.3.desc':'Android-Plattform, die Spender mit Hilfsbedürftigen verbindet, mit sicherer Backend-Speicherung.',
+    'proj.4.tag':'Eingesetzt','proj.4.title':'Computer-Labor-Verwaltungssystem','proj.4.desc':'Hochschul-Laborverwaltung für Aufgabenabgaben und Praktikums-Tracking, eingesetzt am BVJNIOT.',
+    'contact.label':'Vernetzen wir uns',
+    'contact.title':'Lass uns <em>gemeinsam</em> etwas bauen',
+    'contact.sub':'Offen für Software-Entwicklung, Backend-Engineering und Enterprise-Support-Rollen in ganz Deutschland. Immer für ein Gespräch bei einem Kaffee zu haben.',
+    'contact.email':'E-Mail','contact.phone':'Telefon','contact.location':'Standort',
+    'footer.copy':'© 2026 Tejas Khopade — Gestaltet mit','footer.in':'in Paderborn'
+  }
+};
+
+/* ===== language toggle ===== */
+let currentLang = 'en';
+function applyLang(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dataset.lang = lang;
+  const dict = T[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.dataset.t;
+    if(dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.querySelectorAll('[data-t-html]').forEach(el => {
+    const key = el.dataset.tHtml;
+    if(dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('.lang-opt').forEach(o => {
+    o.classList.toggle('on', o.dataset.langOpt === lang);
+  });
+  try{ localStorage.setItem('pf_lang', lang); }catch(e){}
+}
+const saved = (()=>{ try{ return localStorage.getItem('pf_lang'); }catch(e){return null;} })();
+if(saved === 'de' || saved === 'en') applyLang(saved);
+
+document.getElementById('langBtn').addEventListener('click', e => {
+  const target = e.target.closest('.lang-opt');
+  if(target){
+    applyLang(target.dataset.langOpt);
+  } else {
+    applyLang(currentLang === 'en' ? 'de' : 'en');
+  }
+});
+
+/* ===== particles ===== */
+const pcontainer = document.getElementById('particles');
+for(let i = 0; i < 24; i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = 2 + Math.random() * 4;
+  p.style.width = size + 'px';
+  p.style.height = size + 'px';
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.animationDuration = (15 + Math.random() * 20) + 's';
+  p.style.animationDelay = -Math.random() * 30 + 's';
+  pcontainer.appendChild(p);
+}
+
+/* ===== mouse parallax ===== */
+const orb1 = document.getElementById('orb1');
+const orb2 = document.getElementById('orb2');
+const orb3 = document.getElementById('orb3');
+const avatar = document.getElementById('avatar');
+let tx = 0, ty = 0, cx = 0, cy = 0;
+document.addEventListener('mousemove', e => {
+  tx = (e.clientX / window.innerWidth - 0.5) * 2;
+  ty = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+function loop(){
+  cx += (tx - cx) * 0.05;
+  cy += (ty - cy) * 0.05;
+  if(orb1) orb1.style.transform = `translate(${cx*30}px, ${cy*30}px)`;
+  if(orb2) orb2.style.transform = `translate(${cx*-40}px, ${cy*-40}px)`;
+  if(orb3) orb3.style.transform = `translate(${cx*20}px, ${cy*20}px)`;
+  if(avatar){
+    avatar.style.transform = `perspective(800px) rotateY(${cx*4}deg) rotateX(${-cy*3}deg)`;
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ===== scroll reveal ===== */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en => {
+    if(en.isIntersecting){
+      en.target.classList.add('visible');
+      io.unobserve(en.target);
+    }
+  });
+},{threshold:0.12, rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ===== project card cursor glow ===== */
+document.querySelectorAll('[data-proj]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left)/r.width*100) + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top)/r.height*100) + '%');
+  });
+});
+
+/* ===== nav active link on scroll ===== */
+const sections = ['home','experience','skills','projects','contact'];
+const links = document.querySelectorAll('.nav-center a');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 200;
+  let active = 'home';
+  for(const id of sections){
+    const el = document.getElementById(id);
+    if(el && el.offsetTop <= y) active = id;
+  }
+  links.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + active);
+  });
+}, {passive:true});
+
+/* ===== CV button: explain to user ===== */
+document.getElementById('resumeBtn').addEventListener('click', e => {
+  e.preventDefault();
+  const msg = currentLang === 'de'
+    ? 'Lebenslauf wird angehängt — bitte ersetze dies durch einen Link zu deinem PDF.'
+    : 'Replace this button with a link to your CV PDF.';
+  alert(msg);
+});
+</script>
+
+</body>
+</html>
